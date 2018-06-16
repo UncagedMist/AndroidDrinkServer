@@ -1,6 +1,7 @@
 package kk.techbytecare.androiddrinkserver.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +12,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import kk.techbytecare.androiddrinkserver.Common.Common;
+import kk.techbytecare.androiddrinkserver.DrinkListActivity;
+import kk.techbytecare.androiddrinkserver.Interface.ItemClickListener;
 import kk.techbytecare.androiddrinkserver.Model.Category;
 import kk.techbytecare.androiddrinkserver.R;
+import kk.techbytecare.androiddrinkserver.UpdateCategoryActivity;
 import kk.techbytecare.androiddrinkserver.ViewHolder.MenuViewHolder;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
@@ -36,7 +41,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MenuViewHolder holder, final int position) {
 
         Picasso.with(context)
                 .load(categoryList.get(position).Link)
@@ -44,6 +49,19 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
 
         holder.txt_product.setText(categoryList.get(position).Name);
 
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, boolean isLongClick) {
+                if (isLongClick) {
+                    Common.currentCategory = categoryList.get(position);
+                    context.startActivity(new Intent(context, UpdateCategoryActivity.class));
+                }
+                else    {
+                    Common.currentCategory = categoryList.get(position);
+                    context.startActivity(new Intent(context, DrinkListActivity.class));
+                }
+            }
+        });
     }
 
     @Override

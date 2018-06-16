@@ -1,11 +1,14 @@
 package kk.techbytecare.androiddrinkserver.Common;
 
+import kk.techbytecare.androiddrinkserver.Model.Category;
 import kk.techbytecare.androiddrinkserver.Retrofit.IDrinkShopAPI;
 import kk.techbytecare.androiddrinkserver.Retrofit.RetrofitClient;
 
 public class Common {
 
     public static final String BASE_URL = "http://10.0.2.2/drinkshop/";
+
+    public static Category currentCategory;
 
     public static IDrinkShopAPI getAPI()    {
 
