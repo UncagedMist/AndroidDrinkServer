@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import java.io.File;
@@ -123,6 +124,24 @@ public class HomeActivity extends AppCompatActivity
         recycler_menu.setHasFixedSize(true);
 
         getMenuItems();
+
+        updateTokenToServer();
+    }
+
+    private void updateTokenToServer() {
+        IDrinkShopAPI mService = Common.getAPI();
+        mService.updateToken("server_app_01", FirebaseInstanceId.getInstance().getToken(),"1")
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.d("DEBUG", response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("DEBUG", t.getMessage());
+                    }
+                });
     }
 
     private void showAddCategoryDialog() {
@@ -267,6 +286,8 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void displayMenuList(List<Category> categories) {
+        Common.menuList = categories;
+
         MenuAdapter adapter = new MenuAdapter(this,categories);
         recycler_menu.setAdapter(adapter);
     }
@@ -323,18 +344,10 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             // Handle the Home action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_order) {
+            startActivity(new Intent(HomeActivity.this,ShowOrderActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

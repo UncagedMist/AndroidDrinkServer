@@ -5,6 +5,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import kk.techbytecare.androiddrinkserver.Model.Category;
 import kk.techbytecare.androiddrinkserver.Model.Drink;
+import kk.techbytecare.androiddrinkserver.Model.Order;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -59,4 +60,30 @@ public interface IDrinkShopAPI {
     @Multipart
     @POST("server/product/upload_product_img.php")
     Call<String> uploadProductFile(@Part MultipartBody.Part file);
+
+    @FormUrlEncoded
+    @POST("server/product/update_product.php")
+    Observable<String> updateProduct(@Field("id") String id,
+                                     @Field("name") String name,
+                                     @Field("imgPath") String imgPath,
+                                     @Field("price") String price,
+                                     @Field("menuId") String menuId);
+
+    @FormUrlEncoded
+    @POST("server/product/delete_product.php")
+    Observable<String> deleteProduct(@Field("id") String id);
+
+    /*
+    *Order Management
+    */
+
+    @FormUrlEncoded
+    @POST("server/order/getorder.php")
+    Observable<List<Order>> getOrder(@Field("status") String status);
+
+    @FormUrlEncoded
+    @POST("updatetoken.php")
+    Call<String> updateToken(@Field("phone") String phone,
+                             @Field("token") String token,
+                             @Field("isServerToken") String isServerToken);
 }
